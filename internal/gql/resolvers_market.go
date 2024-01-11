@@ -5,8 +5,8 @@ import (
 	"errors"
 
 	"github.com/graph-gophers/graphql-go"
-	"github.com/stellar/go/services/ticker/internal/tickerdb"
-	"github.com/stellar/go/services/ticker/internal/utils"
+	"github.com/xdefrag/ticker/internal/tickerdb"
+	"github.com/xdefrag/ticker/internal/utils"
 )
 
 // Markets resolves the markets() GraphQL query.
@@ -16,7 +16,8 @@ func (r *resolver) Markets(ctx context.Context, args struct {
 	CounterAssetCode   *string
 	CounterAssetIssuer *string
 	NumHoursAgo        *int32
-}) (partialMarkets []*partialMarket, err error) {
+},
+) (partialMarkets []*partialMarket, err error) {
 	numHours, err := validateNumHoursAgo(args.NumHoursAgo)
 	if err != nil {
 		return
@@ -67,7 +68,6 @@ func (r *resolver) Ticker(ctx context.Context,
 		partialMarkets = append(partialMarkets, dbMarketToPartialMarket(dbMkt))
 	}
 	return
-
 }
 
 // validateNumHoursAgo validates if the numHoursAgo parameter is within an acceptable

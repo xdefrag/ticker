@@ -10,9 +10,9 @@ import (
 
 	horizonclient "github.com/stellar/go/clients/horizonclient"
 	hProtocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/ticker/internal/scraper"
-	"github.com/stellar/go/services/ticker/internal/tickerdb"
 	hlog "github.com/stellar/go/support/log"
+	"github.com/xdefrag/ticker/internal/scraper"
+	"github.com/xdefrag/ticker/internal/tickerdb"
 )
 
 // StreamTrades constantly streams and ingests new trades directly from horizon.

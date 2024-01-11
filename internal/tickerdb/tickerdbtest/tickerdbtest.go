@@ -6,9 +6,9 @@ import (
 	"time"
 
 	migrate "github.com/rubenv/sql-migrate"
-	"github.com/stellar/go/services/ticker/internal/tickerdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/xdefrag/ticker/internal/tickerdb"
 )
 
 // SetupTickerTestSession sets up the database for testing the GraphQL endpoints

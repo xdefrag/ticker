@@ -16,9 +16,9 @@ import (
 
 	horizonclient "github.com/stellar/go/clients/horizonclient"
 	hProtocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/ticker/internal/utils"
 	"github.com/stellar/go/support/errors"
 	hlog "github.com/stellar/go/support/log"
+	"github.com/xdefrag/ticker/internal/utils"
 )
 
 // shouldDiscardAsset maps the criteria for discarding an asset from the asset index
@@ -251,7 +251,7 @@ func processAsset(logger *hlog.Entry, asset hProtocol.AssetStat, tomlCache *TOML
 // The TOML validation is performed in parallel to improve performance.
 func (c *ScraperConfig) parallelProcessAssets(assets []hProtocol.AssetStat, parallelism int, assetQueue chan<- FinalAsset) (numNonTrash int, numTrash int) {
 	shouldValidateTOML := c.Client != horizonclient.DefaultTestNetClient // TOMLs shouldn't be validated on TestNet
-	var mutex = &sync.Mutex{}
+	mutex := &sync.Mutex{}
 	var wg sync.WaitGroup
 	numAssets := len(assets)
 	chunkSize := int(math.Ceil(float64(numAssets) / float64(parallelism)))

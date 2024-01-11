@@ -3,7 +3,7 @@ package scraper
 import (
 	"time"
 
-	"github.com/stellar/go/services/ticker/internal/utils"
+	"github.com/xdefrag/ticker/internal/utils"
 
 	horizonclient "github.com/stellar/go/clients/horizonclient"
 	hProtocol "github.com/stellar/go/protocols/horizon"

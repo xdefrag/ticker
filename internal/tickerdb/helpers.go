@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stellar/go/services/ticker/internal/utils"
 	"github.com/stellar/go/support/db/dbtest"
+	"github.com/xdefrag/ticker/internal/utils"
 )
 
 // getDBFieldTags returns all "db" tags for a given struct, optionally excluding the "id".

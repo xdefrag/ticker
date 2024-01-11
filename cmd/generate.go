@@ -5,12 +5,14 @@ import (
 
 	"github.com/lib/pq"
 	"github.com/spf13/cobra"
-	ticker "github.com/stellar/go/services/ticker/internal"
-	"github.com/stellar/go/services/ticker/internal/tickerdb"
+	ticker "github.com/xdefrag/ticker/internal"
+	"github.com/xdefrag/ticker/internal/tickerdb"
 )
 
-var MarketsOutFile string
-var AssetsOutFile string
+var (
+	MarketsOutFile string
+	AssetsOutFile  string
+)
 
 func init() {
 	rootCmd.AddCommand(cmdGenerate)

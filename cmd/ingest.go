@@ -5,12 +5,14 @@ import (
 
 	"github.com/lib/pq"
 	"github.com/spf13/cobra"
-	ticker "github.com/stellar/go/services/ticker/internal"
-	"github.com/stellar/go/services/ticker/internal/tickerdb"
+	ticker "github.com/xdefrag/ticker/internal"
+	"github.com/xdefrag/ticker/internal/tickerdb"
 )
 
-var ShouldStream bool
-var BackfillHours int
+var (
+	ShouldStream  bool
+	BackfillHours int
+)
 
 func init() {
 	rootCmd.AddCommand(cmdIngest)
