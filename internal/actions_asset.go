@@ -3,6 +3,7 @@ package ticker
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -24,7 +25,13 @@ func RefreshAssets(ctx context.Context, s *tickerdb.TickerSession, c *horizoncli
 	parallelism := 20
 	assetQueue := make(chan scraper.FinalAsset, parallelism)
 
-	go sc.ProcessAllAssets(0, parallelism, assetQueue)
+	wl, err := getWhiteList(ctx, s)
+	if err != nil {
+		return err
+	}
+
+	go sc.ProcessAllAssets(0, parallelism, assetQueue,
+		scraper.WithProcessAllAssetsWhiteList(wl))
 
 	wg.Add(1)
 	go func() {
@@ -183,4 +190,19 @@ func dbAssetToAsset(dbAsset tickerdb.Asset) (a Asset) {
 	a.IssuerDetail = i
 
 	return
+}
+
+func getWhiteList(ctx context.Context, s *tickerdb.TickerSession) (map[string]struct{}, error) {
+	trusts, err := s.GetTrusts(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	wl := make(map[string]struct{})
+
+	for _, trust := range trusts {
+		wl[fmt.Sprintf("%s-%s", trust.Code, trust.IssuerAccount)] = struct{}{}
+	}
+
+	return wl, nil
 }

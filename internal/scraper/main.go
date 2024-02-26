@@ -110,14 +110,26 @@ type OrderbookStats struct {
 	SpreadMidPoint     float64
 }
 
+type processAllAssetsOpts struct {
+	assetsWhiteList map[string]struct{}
+}
+
+type ProcessAllAssetsOptFn func(*processAllAssetsOpts)
+
+func WithProcessAllAssetsWhiteList(wl map[string]struct{}) ProcessAllAssetsOptFn {
+	return func(p *processAllAssetsOpts) {
+		p.assetsWhiteList = wl
+	}
+}
+
 // ProcessAllAssets fetches assets from the Horizon public net. If limit = 0, will fetch all assets.
-func (c *ScraperConfig) ProcessAllAssets(limit int, parallelism int, assetQueue chan<- FinalAsset) (numNonTrash int, numTrash int) {
+func (c *ScraperConfig) ProcessAllAssets(limit int, parallelism int, assetQueue chan<- FinalAsset, optFns ...ProcessAllAssetsOptFn) (numNonTrash int, numTrash int) {
 	dirtyAssets, err := c.retrieveAssets(limit)
 	if err != nil {
 		return
 	}
 
-	numNonTrash, numTrash = c.parallelProcessAssets(dirtyAssets, parallelism, assetQueue)
+	numNonTrash, numTrash = c.parallelProcessAssets(dirtyAssets, parallelism, assetQueue, optFns...)
 
 	c.Logger.Infof(
 		"Scanned %d entries. Trash: %d. Non-trash: %d\n",

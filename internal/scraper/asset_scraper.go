@@ -56,6 +56,11 @@ func shouldDiscardAsset(asset hProtocol.AssetStat, shouldValidateTOML bool) bool
 	return false
 }
 
+func isAssetInWhiteList(wl map[string]struct{}, code, issuer string) bool {
+	_, ok := wl[fmt.Sprintf("%s-%s", code, issuer)]
+	return ok
+}
+
 // decodeTOMLIssuer decodes retrieved TOML issuer data into a TOMLIssuer struct
 func decodeTOMLIssuer(tomlData string) (issuer TOMLIssuer, err error) {
 	_, err = toml.Decode(tomlData, &issuer)
@@ -249,7 +254,12 @@ func processAsset(logger *hlog.Entry, asset hProtocol.AssetStat, tomlCache *TOML
 // parallelProcessAssets filters the assets that don't match the shouldDiscardAsset criteria.
 // non-trash assets are sent to the assetQueue.
 // The TOML validation is performed in parallel to improve performance.
-func (c *ScraperConfig) parallelProcessAssets(assets []hProtocol.AssetStat, parallelism int, assetQueue chan<- FinalAsset) (numNonTrash int, numTrash int) {
+func (c *ScraperConfig) parallelProcessAssets(assets []hProtocol.AssetStat, parallelism int, assetQueue chan<- FinalAsset, optFns ...ProcessAllAssetsOptFn) (numNonTrash int, numTrash int) {
+	opts := &processAllAssetsOpts{}
+	for _, optFn := range optFns {
+		optFn(opts)
+	}
+
 	shouldValidateTOML := c.Client != horizonclient.DefaultTestNetClient // TOMLs shouldn't be validated on TestNet
 	mutex := &sync.Mutex{}
 	var wg sync.WaitGroup
@@ -286,7 +296,8 @@ func (c *ScraperConfig) parallelProcessAssets(assets []hProtocol.AssetStat, para
 				logger := c.Logger.
 					WithField("asset_code", assets[j].Asset.Code).
 					WithField("asset_issuer", assets[j].Asset.Issuer)
-				if !shouldDiscardAsset(assets[j], shouldValidateTOML) {
+				if !shouldDiscardAsset(assets[j], shouldValidateTOML) ||
+					isAssetInWhiteList(opts.assetsWhiteList, assets[j].Code, assets[j].Issuer) {
 					c.Logger.Info("Processing asset")
 					finalAsset, err := processAsset(logger, assets[j], tomlCache, shouldValidateTOML)
 					if err != nil {
