@@ -160,6 +160,15 @@ type PartialMarket struct {
 	LastLedgerCloseTime  time.Time `db:"last_ledger_close_time"`
 }
 
+// Trust represents trusted assets for prioritizing in ticker.
+type Trust struct {
+	Code          string    `db:"code"`
+	IssuerAccount string    `db:"issuer_account"`
+	Source        string    `db:"source"`
+	Priority      int64     `db:"priority"`
+	UpdatedAt     time.Time `db:"updated_at"`
+}
+
 // CreateSession returns a new TickerSession that connects to the given db settings
 func CreateSession(driverName, dataSourceName string) (session TickerSession, err error) {
 	dbconn, err := sqlx.Connect(driverName, dataSourceName)

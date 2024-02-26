@@ -11,6 +11,7 @@
 // migrations/20190425110313-add_orderbook_stats.sql (749B)
 // migrations/20190426092321-add_aggregated_orderbook_view.sql (831B)
 // migrations/20220909100700-trades_pk_to_bigint.sql (220B)
+// migrations/20240226135825-add_trusts_table.sql (344B)
 
 package bdata
 
@@ -299,6 +300,26 @@ func migrations20220909100700Trades_pk_to_bigintSql() (*asset, error) {
 	return a, nil
 }
 
+var _migrations20240226135825Add_trusts_tableSql = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x6c\x90\x4d\x6e\xc3\x20\x10\x85\xf7\x9c\xe2\x2d\x53\x35\xe9\x05\xb2\x72\x63\x16\x91\x10\x6e\x5d\xbc\xe8\x0a\x11\x8c\xa2\x91\x6a\x43\x61\x50\x7f\x4e\x5f\x39\x8d\xaa\x26\xca\x16\xde\xcc\x7c\xdf\x13\x9b\x0d\xee\x27\x3a\x66\xc7\x01\x43\x12\xbb\x5e\x36\x46\xc2\x34\x8f\x4a\x82\x73\x2d\x5c\xb0\x12\x00\xe0\xe3\x18\xc0\xe1\x93\xa1\x3b\x03\x3d\x28\xb5\x3e\xbd\x53\x29\x35\x64\xeb\xbc\x8f\x75\xe6\x5b\x89\x12\x6b\xf6\x37\x67\x53\xa6\x98\x89\xbf\x70\xa0\x23\xcd\xd7\xbf\x35\x8d\x8e\xc3\x68\x1d\x83\x69\x0a\x85\xdd\x94\xf8\xfb\x2f\x24\xee\xb6\x42\x34\xca\xc8\xfe\x8c\xdb\x69\xf5\x8a\x54\x0f\x6f\xe4\x1f\x7e\xd1\x4f\x6b\x9a\xb6\xc5\xae\xd3\x2f\xa6\x6f\xf6\xda\x9c\xa5\xec\xa2\x63\x2f\xd9\x6d\x9d\xe9\xbd\x06\x0c\x7a\xff\x3c\x48\xac\x96\xc8\xfa\xca\x6f\xb9\xf9\xbf\xb2\x36\x7e\xcc\xa2\xed\xbb\xa7\x8b\xca\xb6\xe2\x27\x00\x00\xff\xff\x8d\x57\x99\x68\x58\x01\x00\x00")
+
+func migrations20240226135825Add_trusts_tableSqlBytes() ([]byte, error) {
+	return bindataRead(
+		_migrations20240226135825Add_trusts_tableSql,
+		"migrations/20240226135825-add_trusts_table.sql",
+	)
+}
+
+func migrations20240226135825Add_trusts_tableSql() (*asset, error) {
+	bytes, err := migrations20240226135825Add_trusts_tableSqlBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "migrations/20240226135825-add_trusts_table.sql", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x22, 0x90, 0xda, 0x1b, 0xf3, 0xe5, 0x94, 0xb2, 0x16, 0x1a, 0xb3, 0xc3, 0x59, 0x77, 0xf8, 0xab, 0x36, 0xa2, 0x43, 0x30, 0x46, 0x22, 0x6d, 0x11, 0x79, 0xcc, 0xba, 0x8c, 0x3b, 0xc1, 0x62, 0xa3}}
+	return a, nil
+}
+
 // Asset loads and returns the asset for the given name.
 // It returns an error if the asset could not be found or
 // could not be loaded.
@@ -401,19 +422,18 @@ var _bindata = map[string]func() (*asset, error){
 	"migrations/20190425110313-add_orderbook_stats.sql":             migrations20190425110313Add_orderbook_statsSql,
 	"migrations/20190426092321-add_aggregated_orderbook_view.sql":   migrations20190426092321Add_aggregated_orderbook_viewSql,
 	"migrations/20220909100700-trades_pk_to_bigint.sql":             migrations20220909100700Trades_pk_to_bigintSql,
+	"migrations/20240226135825-add_trusts_table.sql":                migrations20240226135825Add_trusts_tableSql,
 }
 
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
 // following hierarchy:
-//
-//	data/
-//	  foo.txt
-//	  img/
-//	    a.png
-//	    b.png
-//
+//     data/
+//       foo.txt
+//       img/
+//         a.png
+//         b.png
 // then AssetDir("data") would return []string{"foo.txt", "img"},
 // AssetDir("data/img") would return []string{"a.png", "b.png"},
 // AssetDir("foo.txt") and AssetDir("notexist") would return an error, and
@@ -446,18 +466,19 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"migrations": {nil, map[string]*bintree{
-		"20190404184050-initial.sql":                         {migrations20190404184050InitialSql, map[string]*bintree{}},
-		"20190405112544-increase_asset_code_size.sql":        {migrations20190405112544Increase_asset_code_sizeSql, map[string]*bintree{}},
-		"20190408115724-add_new_asset_fields.sql":            {migrations20190408115724Add_new_asset_fieldsSql, map[string]*bintree{}},
-		"20190408155841-add_issuers_table.sql":               {migrations20190408155841Add_issuers_tableSql, map[string]*bintree{}},
-		"20190409152216-add_trades_table.sql":                {migrations20190409152216Add_trades_tableSql, map[string]*bintree{}},
-		"20190409172610-rename_assets_desc_description.sql":  {migrations20190409172610Rename_assets_desc_descriptionSql, map[string]*bintree{}},
-		"20190410094830-add_assets_issuer_account_field.sql": {migrations20190410094830Add_assets_issuer_account_fieldSql, map[string]*bintree{}},
-		"20190411165735-data_seed_and_indices.sql":           {migrations20190411165735Data_seed_and_indicesSql, map[string]*bintree{}},
-		"20190425110313-add_orderbook_stats.sql":             {migrations20190425110313Add_orderbook_statsSql, map[string]*bintree{}},
-		"20190426092321-add_aggregated_orderbook_view.sql":   {migrations20190426092321Add_aggregated_orderbook_viewSql, map[string]*bintree{}},
-		"20220909100700-trades_pk_to_bigint.sql":             {migrations20220909100700Trades_pk_to_bigintSql, map[string]*bintree{}},
+	"migrations": &bintree{nil, map[string]*bintree{
+		"20190404184050-initial.sql":                         &bintree{migrations20190404184050InitialSql, map[string]*bintree{}},
+		"20190405112544-increase_asset_code_size.sql":        &bintree{migrations20190405112544Increase_asset_code_sizeSql, map[string]*bintree{}},
+		"20190408115724-add_new_asset_fields.sql":            &bintree{migrations20190408115724Add_new_asset_fieldsSql, map[string]*bintree{}},
+		"20190408155841-add_issuers_table.sql":               &bintree{migrations20190408155841Add_issuers_tableSql, map[string]*bintree{}},
+		"20190409152216-add_trades_table.sql":                &bintree{migrations20190409152216Add_trades_tableSql, map[string]*bintree{}},
+		"20190409172610-rename_assets_desc_description.sql":  &bintree{migrations20190409172610Rename_assets_desc_descriptionSql, map[string]*bintree{}},
+		"20190410094830-add_assets_issuer_account_field.sql": &bintree{migrations20190410094830Add_assets_issuer_account_fieldSql, map[string]*bintree{}},
+		"20190411165735-data_seed_and_indices.sql":           &bintree{migrations20190411165735Data_seed_and_indicesSql, map[string]*bintree{}},
+		"20190425110313-add_orderbook_stats.sql":             &bintree{migrations20190425110313Add_orderbook_statsSql, map[string]*bintree{}},
+		"20190426092321-add_aggregated_orderbook_view.sql":   &bintree{migrations20190426092321Add_aggregated_orderbook_viewSql, map[string]*bintree{}},
+		"20220909100700-trades_pk_to_bigint.sql":             &bintree{migrations20220909100700Trades_pk_to_bigintSql, map[string]*bintree{}},
+		"20240226135825-add_trusts_table.sql":                &bintree{migrations20240226135825Add_trusts_tableSql, map[string]*bintree{}},
 	}},
 }}
 
